@@ -9,21 +9,29 @@ Repo for dev environment that includes the following:
 
 1. Copy the tmux.conf to your home directory
 
-        cp tmux.conf ~/.tmux.conf
+```bash
+$ cp tmux.conf ~/.tmux.conf
+```
 
 2. Set up permissions for the file
 
-        chmod 755 ~/.tmux.conf 
+```bash
+$ chmod 755 ~/.tmux.conf 
+```
 
 3. Clone the Tmux Plugin Manager (TPM) project
 
-        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```bash
+$ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
 
 4. Open tmux window, source tmux config file, and install packages
 
-        tmux
-        # Press C-s + r
-        # Press C-s + I
+```bash
+$ tmux
+# Press Bind <C-s> + r to source ~/.tmux.conf
+# Press C-s + I to install tpm packages
+```
 
 5. Done
 
