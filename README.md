@@ -116,30 +116,180 @@ $ tmux
 * Navigate between vim and tmux windows with key bindings
 * Weather of specified city (inside of .tmux.conf)
 
-## NVIM Configuration
+## Neovim (nvim) Configuration
 
-1. Download latest stable version for neovim. As of today, it is 0.11.5:
-  cd ~/.local/share
-  wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
-2. Extract:
-  tar -xvf nvim-linux-x86_64.tar.gz
-souce init.lua
-install PAcker pages with `:PackerSync`
+This repository provides a modern Neovim setup using **lazy.nvim** as the plugin manager, Lua-based structured configuration, LSP, Treesitter, Telescope, matching Catpuccin theme with TMUX. 
 
-3. 
-### Current Configs:
-- set leader to <space>
-- leader + h to clear highlight searchi
-- uses packer.nvim's bootstrap - if we clone this configuration, it will check to see if packer is already installed, and if not, it will go ahead and get it. 
-don't forget alias for nvim from vim (there should already be one for vi, but if not , add it also):q
-I think all we have to do is to source ~/.config/nvim/init.lua
-- tabs are 2 space
-- disable netrw
-- chaange Ctrl+n to enter nvim-tree
-- use gruvbox colorscheme
-- lualine full path for files
-- nvim-tree web-iconsv
+### 1. Install nvim (Linux)
 
-- telescope c-p find files, space+space old files, space+fg live grep, space+fh help tags
-NOTE: Treesitter has two package deps: ripgrep and fd-find
-- treesitter has the following parsers: c, cpp, lua, rust, go, vimk
+Download the latest **stable** nvim version from [releases](https://github.com/neovim/neovim/releases).
+
+```bash
+$ cd ~/.local/share
+$ wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
+$ tar -xvf nvim-linux-x86_64.tar.gz
+```
+
+Add Neovim to your PATH:
+ 
+```bash
+$ echo 'export PATH="$HOME/.local/share/nvim/nvim-linux-x86_64/bin:$PATH"' >> ~/.bashrc
+$ source ~/.bashrc
+```
+
+Or add these in your `~/.bashrc` file:
+
+```bash
+# editor aliases
+alias nvim='~/.local/share/nvim/nvim-linux-x86_64/bin/nvim'
+alias vi='nvim'
+alias vim='nvim'
+```
+
+Verify:
+
+```bash
+$ nvim --version
+```
+
+### 2. OS Dependencies
+
+The following system packages are required:
+
+```bash
+$ sudo dnf install -y ripgrep fd-find
+```
+
+Used by:
+* Telescope
+* Treesitter
+
+### 3. Install the nvim config
+
+Careful with previous configs, but quick and dirty:
+
+```bash
+$ cp -rf nvim ~/.config/nvim
+```
+
+Directory structure:
+
+```bash
+~/.config/nvim
+├── init.lua
+└── lua
+    ├── config
+    │   ├── keymaps.lua
+    │   └── lazy.lua
+    └── plugins
+        ├── catppuccin.lua
+        ├── completions.lua
+        ├── lsp-config.lua
+        ├── lualine.lua
+        ├── neo-tree.lua
+        ├── none-ls.lua
+        ├── telescope.lua
+        └── treesitter.lua
+```
+### 4. First Launch
+
+Start Neovim:
+
+```bash
+nvim
+```
+
+On first launch:
+* lazy.nvim bootstraps automatically
+* Plugins are installed without user interaction
+
+Verify with:
+
+```vim
+:Lazy
+```
+
+### 5. Core Configuration Overview
+
+**General**
+
+* Leader key: `<Space>`
+* Tabs: **2 spaces**
+* `netrw` disabled
+* Clipboard integrates with system when supported
+* Consistent diagnostics and LSP UI (needs tuning)
+
+**Keymaps**
+
+* `<leader>h`   → clear search highlights
+* `<leader>d`   → show diagnostics float
+* `gd`          → go to definition
+* `K`           → hover documentation
+* `gr`          → references
+* `<leader>ca`  → code actions
+
+### 6. Plugins in Use
+
+**Plugin Manager**
+
+* lazy.nvim
+
+**UI / UX**
+
+* catppuccin.nvim – colorscheme
+* lualine.nvim – statusline (full file path)
+* neo-tree.nvim – file explorer
+* nvim-web-devicons – icons
+
+**Navigation & Search**
+
+* telescope.nvim
+    * <leader>ff → find files
+    * <leader>fg → live grep
+    * <leader>fb → buffers
+    * <leader>fh → help tags
+    * <leader>en → browse Neovim config
+
+**Syntax & Parsing**
+
+* nvim-treesitter
+    * Installed parsers:
+        * lua, rust, go, vim
+
+**LSP**
+
+* nvim-lspconfig
+* mason.nvim
+* mason-lspconfig.nvim
+
+Enabled language servers:
+
+* Lua (lua_ls)
+* Rust (rust_analyzer)
+* Go (gopls)
+* Bash (bashls)
+* Markdown (marksman)
+
+**Completions**
+
+* nvim-cmp
+* LSP-backed completion via `cmp-nvim-lsp`
+
+**Formatting / Linting**
+
+* none-ls.nvim
+    * stylua
+    * gofmt
+    * gomodifytags
+    * golangci-lint (if installed)
+
+### 7. Optional Aliases
+
+If desired, alias vim and vi to nvim:
+
+```bash
+alias vim=nvim
+alias vi=nvim
+```
+
+Add to `~/.bashrc`.
